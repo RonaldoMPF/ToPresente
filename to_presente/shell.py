@@ -18,6 +18,18 @@ from __future__ import print_function
 import sys
 
 
+class Shell(object):
+
+    def setUp(self):
+        pass
+
+    def multiply(self, x, y):
+        return x * y
+
+    def times_three(self, x):
+        return 3 * x
+
+
 def main():
     print("Shell running")
 
