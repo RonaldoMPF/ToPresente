@@ -29,9 +29,5 @@ class TestShell(unittest.TestCase):
     def test_strings_a_3(self):
         self.assertEqual(self.shell.times_three('a'), 'aaa')
 
-    def test_main(self):
-        main()
-
-
 if __name__ == '__main__':
     unittest.main()

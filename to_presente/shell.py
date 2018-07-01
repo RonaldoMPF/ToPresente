@@ -32,6 +32,9 @@ class Shell(object):
 
 def main():
     print("Shell running")
+    variavel = input()
+    print("O input eh: %s" % variavel)
+    print("Shell terminou")
 
 if __name__ == "__main__":
     sys.exit(main())
