@@ -20,6 +20,7 @@ dist/
 .coverage.*
 .cache
 nosetests.xml
+.pytest_cache/
 coverage.xml
 
 *credentials.json
