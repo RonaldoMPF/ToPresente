@@ -53,25 +53,6 @@ def build_train():
       student_id = os.path.dirname(image_path).split('/')[-1]
       add_student_to_train(image_path, student_id)
 
-def draw_rectangle(face_locations, students_id):
-  for (top, right, bottom, left), name in zip(face_locations, students_id):
-    # Scale back up face locations since the frame we detected in was scaled to 1/4 size
-    top *= 4
-    right *= 4
-    bottom *= 4
-    left *= 4
-
-    # Draw a box around the face
-    cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
-
-    # Draw a label with a name below the face
-    cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), 3)
-    font = cv2.FONT_HERSHEY_DUPLEX
-    cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-
-    # Display the resulting image
-    cv2.imshow('Video', frame)
-
 def recognize_image(frame, process_this_frame):
   # Resize frame of video to 1/4 size for faster face recognition processing
   small_frame = cv2.resize(frame, (0, 0), fx = 0.25, fy = 0.25)
@@ -89,17 +70,38 @@ def recognize_image(frame, process_this_frame):
       # See if the face is a match for the known face(s) in train data
       match = face_recognition.compare_faces(train_data, face_encoding, tolerance = 0.6)
       name = "Unknown"
+      names = []
 
       for i in range(len(match)):
         if match[i]:
           name = students_id[i]
 
-      students_id.append(name)
+      names.append(name)
 
       process_this_frame = not process_this_frame
 
-  # Display the results
-  draw_rectangle(face_locations, students_id)
+      # Display the results
+      draw_rectangle(face_locations, names)
+
+
+def draw_rectangle(face_locations, names):
+  for (top, right, bottom, left), name in zip(face_locations, names):
+    # Scale back up face locations since the frame we detected in was scaled to 1/4 size
+    top *= 4
+    right *= 4
+    bottom *= 4
+    left *= 4
+
+    # Draw a box around the face
+    cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+
+    # Draw a label with a name below the face
+    cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), 3)
+    font = cv2.FONT_HERSHEY_DUPLEX
+    cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+
+    # Display the resulting image
+    cv2.imshow('Video', frame)
 
 build_train()
 
