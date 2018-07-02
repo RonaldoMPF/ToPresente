@@ -1,0 +1,9 @@
+[run]
+source =
+  to_presente
+
+[report]
+include =
+  to_presente/*
+omit =
+  */tests/*
