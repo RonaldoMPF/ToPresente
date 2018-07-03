@@ -15,7 +15,7 @@
 
 import unittest
 
-from to_presente.shell import Shell, main
+from to_presente.shell import Shell
 
 
 class TestShell(unittest.TestCase):
