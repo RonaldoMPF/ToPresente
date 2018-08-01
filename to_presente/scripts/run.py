@@ -1,53 +1,32 @@
-# Copyright (2018) Universidade Federal de Campina Grande
-# All Rights Reserved.
-#
-#    Licensed under the Apache License, Version 2.0 (the "License"); you may
-#    not use this file except in compliance with the License. You may obtain
-#    a copy of the License at
-#
-#         http://www.apache.org/licenses/LICENSE-2.0
-#
-#    Unless required by applicable law or agreed to in writing, software
-#    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-#    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-#    License for the specific language governing permissions and limitations
-#    under the License.
-
-#   1. Process each video frame at 1/4 resolution 
-#      (though still display it at full resolution)
-#   2. Only detect faces in every other frame of video.
-
-from __future__ import print_function
-import cv2
 import face_recognition
-
+import cv2
 import glob, os
 import sys
 
+# This is a demo of running face recognition on live video from your webcam. It's a little more complicated than the
+# other example, but it includes some basic performance tweaks to make things run a lot faster:
+#   1. Process each video frame at 1/4 resolution (though still display it at full resolution)
+#   2. Only detect faces in every other frame of video.
+
+# PLEASE NOTE: This example requires OpenCV (the `cv2` library) to be installed only to read from your webcam.
+# OpenCV is *not* required to use the face_recognition library. It's only required if you want to run this
+# specific demo. If you have trouble installing it, try any of the other demos that don't require it instead.
+
 # Initialize some variables
-train_data = []
 students_id = []
-DATA_PATH = "../data"
+train_data = []
 process_this_frame = True
 
-class Shell(object):
+DATA_PATH = "../data"
 
-    def setUp(self):
-        pass
-
-    def multiply(self, x, y):
-        return x * y
-
-    def times_three(self, x):
-        return 3 * x
-
+def init_camera(url):
+    return cv2.VideoCapture(url)
 
 def check_camera(video_capture):
   return video_capture.read() != None
 
-
 def add_student_to_train(image_path, student_id):
-  print('Loading image: ' + image_path)
+  print ('Loading image: ' + image_path)
   image = face_recognition.load_image_file(image_path)
 
   # Return the 128-dimension face encoding for each face in the image.
@@ -58,7 +37,6 @@ def add_student_to_train(image_path, student_id):
     train_data.append(fc_encodings[0])
     students_id.append(student_id)
 
-
 def write_file(file_path, list):
   file = open(file_path, "w")
   for element in list:
@@ -67,16 +45,13 @@ def write_file(file_path, list):
 
   def read_file(file_path):
       file = open(file_path, "r")
-      print(file)
+      print (file)
       file.close()
 
-
-def build_train(video_capture):
-  if check_camera(video_capture):
-    for image_path in glob.glob(DATA_PATH + '/**/*.jpg'):
+def build_train():
+  for image_path in glob.glob(DATA_PATH + '/**/*.jpg'):
       student_id = os.path.dirname(image_path).split('/')[-1]
       add_student_to_train(image_path, student_id)
-
 
 def recognize_image(frame, process_this_frame):
   # Resize frame of video to 1/4 size for faster face recognition processing
@@ -106,10 +81,10 @@ def recognize_image(frame, process_this_frame):
       process_this_frame = not process_this_frame
 
       # Display the results
-      draw_rectangle(face_locations, names, frame)
+      draw_rectangle(frame, face_locations, names)
 
 
-def draw_rectangle(face_locations, names, frame):
+def draw_rectangle(frame, face_locations, names):
   for (top, right, bottom, left), name in zip(face_locations, names):
     # Scale back up face locations since the frame we detected in was scaled to 1/4 size
     top *= 4
@@ -128,13 +103,22 @@ def draw_rectangle(face_locations, names, frame):
     # Display the resulting image
     cv2.imshow('Video', frame)
 
-
 def main():
 
-    # Get a reference to webcam #0 (the default one)
-    video_capture = cv2.VideoCapture(0)
 
-    build_train(video_capture)
+    if len(sys.argv) < 2:
+        sys.exit("Oops! The camera url is missing.")
+
+    # Get a reference to webcam #0 (the default one)
+    url =  str(sys.argv[1])
+    video_capture = init_camera(url)
+
+    #video_capture = cv2.VideoCapture(0)
+
+    if not check_camera(video_capture):
+        sys.exit("Oops! Error with the camera url.")
+
+    build_train()
 
     while True:
         # Grab a single frame of video
@@ -143,7 +127,7 @@ def main():
         if(check_camera(video_capture)):
             recognize_image(frame, process_this_frame)
         else:
-            print('An error occurred in frame. Please check the camera')
+            print 'An error occurred in frame. Please check the camera'
             break
 
         # Hit 'q' on the keyboard to quit!
@@ -153,7 +137,6 @@ def main():
     # Release handle to the webcam
     video_capture.release()
     cv2.destroyAllWindows()
-    
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()
