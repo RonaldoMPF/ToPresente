@@ -29,6 +29,7 @@ train_data = []
 students_id = []
 DATA_PATH = "../data"
 process_this_frame = True
+#url = "http://192.168.25.4:8080/shot.jpg?rnd=581707"
 
 class Shell(object):
 
@@ -91,18 +92,18 @@ def recognize_image(frame, process_this_frame):
     face_locations = face_recognition.face_locations(rgb_small_frame)
     face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
 
+    names = []
     for face_encoding in face_encodings:
       # See if the face is a match for the known face(s) in train data
       match = face_recognition.compare_faces(train_data, face_encoding, tolerance = 0.6)
       name = "Unknown"
-      names = []
 
       for i in range(len(match)):
         if match[i]:
           name = students_id[i]
 
       names.append(name)
-
+      print(names)
       process_this_frame = not process_this_frame
 
       # Display the results
@@ -133,10 +134,12 @@ def main():
 
     # Get a reference to webcam #0 (the default one)
     video_capture = cv2.VideoCapture(0)
+    #video_capture = cv2.VideoCapture(url)
 
     build_train(video_capture)
 
     while True:
+        #video_capture = cv2.VideoCapture(url)
         # Grab a single frame of video
         ret, frame = video_capture.read()
 
