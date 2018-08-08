@@ -67,25 +67,24 @@ Binary will be available to be run inside venv directory
 
 Assuming tox is installed and we're inside the project
 
-Run all enviroments (styling and linting included)
+Run all enviroments (both python 2.7 and python 3.5)
 
 ```
 tox
 ```
 
-You can run the tests for both python 2.7 and python 3.5
+You can run the tests for python 2.7 
 
 ```
-tox -e py27,py35
+tox -e py27
 ```
 
-### And coding style tests and liting
-
-You can run coding style tests and python liting
+You can run the tests for python 3.5
 
 ```
-tox -e pep8, pylint
+tox -e py35
 ```
+
 
 ## Built With
 
