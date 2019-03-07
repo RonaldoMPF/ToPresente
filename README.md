@@ -1,3 +1,10 @@
+[![Build Status](https://travis-ci.org/RonaldoMPF/ToPresente.svg?branch=master)](https://travis-ci.org/RonaldoMPF/ToPresente)
+[![License](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
+
+[![Python 2.7](https://img.shields.io/badge/python-2.7-blue.svg)](https://www.python.org/downloads/release/python-270/)
+[![Python 3.5](https://img.shields.io/badge/python-3.5-blue.svg)](https://www.python.org/downloads/release/python-350/)
+<br />
+
 # ToPresente
 PROFESSOR, TÔ PRESENTE! - Projeto da disciplina de Inteligência Artificial 2018.1
 
