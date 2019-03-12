@@ -92,6 +92,11 @@ You can run the tests for python 3.5
 tox -e py35
 ```
 
+## Authors
+
+* **Benardi Nunes** - *Setup, Test integration and bash experiment* - [Benardi](https://github.com/Benardi)
+
+See also the list of [contributors](https://github.com/RonaldoMPF/ToPresente/contributors) who participated in this project.
 
 ## Built With
 
